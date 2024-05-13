@@ -1,27 +1,25 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import { auth, provider } from "../firebase/FirebaseConfig";
 import { signInWithPopup } from "firebase/auth";
-import HomePage from "./HomePage";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-	const [value, setValue] = useState("");
-	// const navigate = useNavigate;
-	const loginWithGoogle = () => {
-		signInWithPopup(auth, provider).then((data) => {
-			setValue(data.user.email);
-			localStorage.setItem("email", data.user.email);
-		});
+	const navigate = useNavigate();
+
+	const loginWithGoogle = async () => {
+		const results =await signInWithPopup(auth, provider);
+		const authInfo={
+			userID: results.user.uid,
+			name: results.user.displayName,
+			profilePhoto:results.user.photoURL,
+			isAuth: true,
+		}
+		localStorage.setItem("auth", JSON.stringify(authInfo))
+		navigate('/home')
+		
 	};
-	useEffect(() => {
-		setValue(localStorage.getItem("email"));
-	});
 	return (
-		<>
-			{value ? (
-				<HomePage />
-			) : (
 				<section className="bg-stone-200 ">
 					<div className="h-full px-5 bg-stone-100 drop-shadow-xl sm:max-w-lg mx-auto">
 						<h1 className="text-2xl font-semibold py-2">
@@ -83,8 +81,6 @@ const Login = () => {
 						</div>
 					</div>
 				</section>
-			)}
-		</>
 	);
 };
 

@@ -7,17 +7,17 @@ import Footer from "../components/Footer";
 import Transactions from "../components/Transactions";
 
 const HomePage = () => {
-	// console.log(import.meta.env.VITE_FIREBASE_API_KEY)
 	return (
-		<div className="relative bg-white h-screen flex flex-col justify-between dark:bg-black dark:text-white transition ease-linear drop-shadow-xl sm:max-w-lg mx-auto">
-			<div className=" h-full flex-1 ">
+		<section className=" scroll-smooth bg-stone-100 px-2 dark:bg-slate-800   ease-linear">
+		<div className="bg-white min-h-screen flex flex-col justify-between dark:bg-black dark:text-white transition ease-linear drop-shadow-xl sm:max-w-lg mx-auto">
+			<div>
 				<Header />
 				<AvailableBalance />
 				<Transactions />
-
 			</div>
-			<Footer />
 		</div>
+		<Footer />
+</section>			
 	);
 };
 

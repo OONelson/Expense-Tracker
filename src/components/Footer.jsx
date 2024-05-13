@@ -17,7 +17,8 @@ const Footer = () => {
 		);
 
 	return (
-		<footer className="fixed bottom-0 w-full flex justify-between items-center  py-5 px-4 border-t-slate-300 border-t">
+		<section className=" dark:bg-black dark:text-white transition ease-linear mx-auto flex justify-center">
+		<footer className="dark:bg-black dark:text-white transition ease-linear bg-white fixed bottom-0  flex justify-between items-center py-5 px-4 w-full sm:w-2/5 md:w-2/5  border-t-slate-300 border-t">
 			<Link to="/analytics">
 				<div className=" flex flex-col  items-center cursor-pointer">
 					<PieChartOutline
@@ -31,7 +32,7 @@ const Footer = () => {
 					<p className="text-slate-400">Analytics</p>
 				</div>
 			</Link>
-			<Link to="/">
+			<Link to="/home">
 				<div
 					className="flex justify-center items-center bg-yellow-300 px-2 rounded-3xl cursor-pointer w-12 h-12 dark:text-black "
 					onClick={handleOpenPopup}
@@ -53,6 +54,7 @@ const Footer = () => {
 				</div>
 			</Link>
 		</footer>
+						</section>
 	);
 };
 

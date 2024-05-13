@@ -4,64 +4,78 @@ import {
 	collection,
 	where,
 	orderBy,
-	onSnapshot
+	onSnapshot,
 } from "firebase/firestore";
 import { db } from "../firebase/FirebaseConfig";
 import { TagContext } from "../context/TagContext";
-// import { useGetUserInfo } from "./useGetUserInfo";
+import { useGetUserInfo } from "./useGetUserInfo";
 
 export const useGetTransactions = () => {
 	const [transactions, setTransactions] = useState([]);
 	const [transactionTotal, setTransactionTotal] = useState({
 		expenses: 0.0
 	});
+	const [dayTotal, setDayTotal]= useState(null)
+
+	// FUNCTIONALITY FOR A DAY SPENDING
+	const today=new Date();
+	today.setHours(0,0,0,0);
+
+	// const [chartData, setChartData]= useState({})
+
 	const [isTransactionAvailable, setIsTransactionAvailable] = useState(false);
 	const { setIsLoading } = useContext(TagContext);
 
-	const transactionCollectionRef = collection(db, "transactions");
-	// const { userID } = useGetUserInfo();
-
+	const transColRef = collection(db, "transactions");
+	const { userID } = useGetUserInfo();
+	
 	const getTransactions = async () => {
 		let unsubscribe;
 		try {
 			const queryTransactions = query(
-				transactionCollectionRef
-				// where("userID", "==", userID),
-				// orderBy("createdAt")
+				transColRef, 
+				where("userID", "==", userID, "createdAt", ">=", today),
+				orderBy("createdAt", "desc")
 			);
-
+			
 			unsubscribe = onSnapshot(queryTransactions, (snapshot) => {
 				let docs = [];
 				let totalExpenses = 0;
-
+				
 				snapshot.forEach((doc) => {
-					const data = doc.data();
+					
+					const data = doc.data()
 					const id = doc.id;
-
+					
 					docs.push({ ...data, id });
 
-					if (data.transactionType === "expense") {
+					
 						totalExpenses += Number(data.transactionAmount);
-					}
+				
 					console.log(totalExpenses);
 				});
-
+				setDayTotal(totalExpenses)
 				setTransactions(docs);
 				setIsTransactionAvailable(transactions);
-				setIsLoading(false);
 				setTransactionTotal({
 					expenses: totalExpenses
 				});
+				setIsLoading(false);
 			});
 		} catch (err) {
-			console.error(err);
+			console.log(err);
 		}
 		return () => unsubscribe();
 	};
 
+	// const chartData={
+	// 	labels: transactions.map(transaction=>)
+	// }
 	useEffect(() => {
-		getTransactions();
+		setTimeout(() => {
+			getTransactions();
+		}, 3000);
 	}, []);
 
-	return { transactions, transactionTotal, isTransactionAvailable };
+	return { transactions, transactionTotal, isTransactionAvailable, dayTotal };
 };

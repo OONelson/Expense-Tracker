@@ -21,8 +21,7 @@ const App = () => {
 					<TagProvider>
 						<CreateTagProvider>
 							<TransactionProvider>
-								<div className="h-screen bg-stone-100 px-2 dark:bg-slate-800   ease-linear">
-									<Router>
+								<Router>
 										<Routes>
 											<Route exact path="/" element={<Login />} />
 											<Route path="/home" element={<HomePage />} />
@@ -31,7 +30,6 @@ const App = () => {
 											<Route path="*" element={<Error />} />
 										</Routes>
 									</Router>
-								</div>
 							</TransactionProvider>
 						</CreateTagProvider>
 					</TagProvider>

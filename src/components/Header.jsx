@@ -1,15 +1,23 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { Moon, LogOutOutline, SunnyOutline } from "react-ionicons";
 import { DarkModeContext } from "../context/DarkModeContext";
-// import { useContext } from "react";
-
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/FirebaseConfig";
 const Header = () => {
 	const { darkMode, handleToggleDarkMode } = useContext(DarkModeContext);
-	const logout = () => {
-		localStorage.clear();
-		window.location.reload();
-	};
+
+	const navigate= useNavigate();
+	const logout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.clear();
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 	return (
 		<header className="flex items-center justify-between flex-row px-2  sm:pt-12 pb-10 ">
 			<div

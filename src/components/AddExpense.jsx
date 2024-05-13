@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
 	ArrowDownOutline,
 	PricetagOutline,
@@ -13,8 +13,9 @@ import { ConfirmContext } from "../context/ConfirmContext";
 import { TransactionContext } from "../context/TransactionContext";
 
 const AddExpense = () => {
-	const { handleClosePopup } = useContext(AddExpenseContext);
 	const { handleOpenTagList, isTagOpen } = useContext(TagContext);
+	const [date, setDate] = useState(new Date());
+	const { handleClosePopup } = useContext(AddExpenseContext);
 	const { handleOpenConfirmation, confirmation, setSelected, selected } =
 		useContext(ConfirmContext);
 	const { transactionAmount, setTransactionAmount } =
@@ -39,10 +40,10 @@ const AddExpense = () => {
 			</>
 		);
 	return (
-		<section className="flex justify-center text-slate-400 items-center flex-col fixed text-xl -mt-10 z-10 h-3/4 bg-white bg-opacity-70 backdrop-blur-sm -mr-4 bottom-2/3 dark:bg-black dark:bg-opacity-60 dark:text-white w-full  translate-y-2/3 translate-x-0 sm:w-full sm:translate-x-1/4 md:w-full md:translate-x-1/2 lg:w-2/5 lg:translate-x-3/4 transition ease-linear">
+		<section className="flex justify-center text-slate-400 items-center flex-col fixed text-xl  z-10 h-full bg-white bg-opacity-70 backdrop-blur-sm -mr-4 bottom-2/3 dark:bg-black dark:bg-opacity-60 dark:text-white w-full  translate-y-2/3 translate-x-0 sm:w-full sm:translate-x-1/4 md:w-full md:translate-x-1/2 lg:w-2/5 lg:translate-x-3/4 transition ease-linear">
 			<div>
 				<p className="text-lg text-center font-thin">
-					Today at Wed May 01 2024
+					Today at {date.toDateString()}
 				</p>
 				<input
 					type="number"
