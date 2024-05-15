@@ -23,20 +23,14 @@ const Confirm = ({ transactionAmount }) => {
 		addTransaction({
 			emoji, value, transactionAmount
 		})
+		setIsLoading(false)
+		navigate('/home')
+		handleCloseConfirmation()
+		handleClosePopup()
+
 	}
 	
-	useEffect(()=>{
-		
-		setTimeout(() => {
-			setIsLoading(true)
-			handleAddTransaction();
-			navigate('/home')
-			handleCloseConfirmation()
-			handleClosePopup()
-			
-		}, 1000);
-		setIsLoading(false);
-	}, [])
+
 	return (
 		<section className="flex justify-center items-center">
 		<div className=" fixed bottom-0 h-full mx-auto w-full sm:w-1/3 md:w-2/3 lg:w-1/2  dark:bg-black dark:bg-opacity-60 bg-opacity-60 backdrop-blur-lg bg-white transition ease-linear drop-shadow-2xl">
