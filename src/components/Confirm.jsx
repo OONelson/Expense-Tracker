@@ -1,27 +1,42 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LockClosedOutline, ArrowForwardOutline } from "react-ionicons";
 import { ConfirmContext } from "../context/ConfirmContext";
 import { DarkModeContext } from "../context/DarkModeContext";
 import { AddExpenseContext } from "../context/AddExpenseContext"
+import { TagContext } from "../context/TagContext";
 import { useAddTransaction } from "../hooks/useAddTransaction";
+import Spinner from './Spinner';
+
 const Confirm = ({ transactionAmount }) => {
 	const { addTransaction } = useAddTransaction();
 	const { handleCloseConfirmation, selected } = useContext(ConfirmContext);
 	const { darkMode } = useContext(DarkModeContext);
 	const { handleClosePopup } = useContext(AddExpenseContext);
+	const {isLoading, setIsLoading}= useContext(TagContext)
 	const {emoji, value} = selected;
 	
 	const navigate= useNavigate();
 	const handleAddTransaction=()=>{
+		setIsLoading(true)
 		addTransaction({
 			emoji, value, transactionAmount
 		})
-		navigate('/home')
-		handleCloseConfirmation()
-		handleClosePopup()
 	}
+	
+	useEffect(()=>{
+		
+		setTimeout(() => {
+			setIsLoading(true)
+			handleAddTransaction();
+			navigate('/home')
+			handleCloseConfirmation()
+			handleClosePopup()
+			
+		}, 1000);
+		setIsLoading(false);
+	}, [])
 	return (
 		<section className="flex justify-center items-center">
 		<div className=" fixed bottom-0 h-full mx-auto w-full sm:w-1/3 md:w-2/3 lg:w-1/2  dark:bg-black dark:bg-opacity-60 bg-opacity-60 backdrop-blur-lg bg-white transition ease-linear drop-shadow-2xl">
@@ -66,9 +81,12 @@ const Confirm = ({ transactionAmount }) => {
 						Cancel
 					</button>
 					<button
-						className="bg-black dark:bg-white text-white dark:text-black px-8 py-2 rounded-md hover:tracking-wider transition-all hover:shadow-md"
+						className=" flex justify-center items-center bg-black dark:bg-white text-white dark:text-black px-8 py-2 rounded-md hover:tracking-wider transition-all hover:shadow-md"
 						onClick={handleAddTransaction}
 						>
+							<p>
+							{isLoading && <Spinner/>}
+							</p>
 						<span>Confirm</span>
 					</button>
 				</div>

@@ -7,6 +7,8 @@ import { useGetUserInfo } from "../hooks/useGetUserInfo";
 const ProfilePage = () => {
 	const {name, profilePhoto}= useGetUserInfo();
 	return (
+		<section>
+
 		<div className=" bg-white h-screen  dark:bg-black dark:text-white transition ease-linear drop-shadow-xl sm:max-w-lg mx-auto">
 			<Header />
 				<h1 className="text-xl pl-3 pb-3">profile</h1>
@@ -14,8 +16,9 @@ const ProfilePage = () => {
 				<img src={profilePhoto} alt="profilephoto" className="rounded-full h-16"/>
 				<h2>{name}</h2>
 				</div>
-			<Footer />
 		</div>
+			<Footer />
+		</section>
 	);
 };
 

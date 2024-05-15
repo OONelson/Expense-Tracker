@@ -6,6 +6,7 @@ import { CreateTagContext } from "../context/CreateTagContext";
 import { DarkModeContext } from "../context/DarkModeContext";
 import { addDoc, collection } from "firebase/firestore";
 import Spinner from "./Spinner";
+import { Toaster, toast } from 'sonner'
 import { TagContext } from "../context/TagContext";
 const CreateTag = () => {
 	const { handleCloseCreateTag } = useContext(CreateTagContext);
@@ -28,7 +29,7 @@ const CreateTag = () => {
 		};
 		if (!tag.emoji || !tag.value) {
 			setIsAdding(false);
-			alert("emoji and name can not be empty");
+			toast.error("emoji and name can not be empty");
 			return;
 		}
 		setIsLoading(true);
@@ -36,9 +37,10 @@ const CreateTag = () => {
 		addDoc(colRef, newTag).then((docRef) => {
 			const docId = docRef.id;
 			console.log(docId);
-			alert("tag created");
+			toast.success("tag created");
 		});
 		setIsLoading(false);
+		handleCloseCreateTag()
 	};
 
 	const handleChange = (e) => {
@@ -47,11 +49,11 @@ const CreateTag = () => {
 		setTag((prev) => {
 			return { ...prev, [name]: value };
 		});
-		handleCloseCreateTag()
 	};
 
 	return (
 		<section className="h-full mx-auto flex justify-center">
+			<Toaster richColors Error position="top-right" />
 
 		<article className=" fixed bottom-0 h-full mx-auto w-full sm:w-1/3 md:w-2/3 lg:w-1/2  dark:bg-black dark:bg-opacity-60 bg-opacity-60 backdrop-blur-lg bg-white transition ease-linear drop-shadow-2xl">
 			<ArrowBackCircleOutline

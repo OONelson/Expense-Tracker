@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useContext } from "react";
-import { format } from 'date-fns';
 import { useGetTransactions } from "../hooks/useGetTransactions";
 import { TagContext } from "../context/TagContext";
 import Spinner from "./Spinner";
@@ -34,21 +33,21 @@ const Transactions = () => {
 					</span>
 						<>
 							{transactions.map((transaction) => {
-								const { index, emoji, value, transactionAmount,  } = transaction;
+								const { index, emoji, value, transactionAmount, createdAt } = transaction;
 								
 								
-								const createdAtDate = transaction.createdAt.toDate();
+								const createdAtDate = createdAt?.toDate();
 								const today = new Date();
 								const yesterday = new Date(today);
 								yesterday.setDate(today.getDate() - 1);
 				
 								let displayDate;
-								if (createdAtDate.toDateString() === today.toDateString()) {
+								if (createdAtDate?.toDateString() === today?.toDateString()) {
 									displayDate = 'today';
-								} else if (createdAtDate.toDateString() === yesterday.toDateString()) {
+								} else if (createdAtDate?.toDateString() === yesterday?.toDateString()) {
 									displayDate = 'yesterday';
 								} else {
-									displayDate = createdAtDate.toDateString();
+									displayDate = createdAtDate?.toDateString();
 								}
 
 
@@ -58,7 +57,7 @@ const Transactions = () => {
 											<span className="text-4xl">
 												{emoji}
 											</span>
-											<p className="flex flex-col justify-center items-center space-y-0">
+											<p className="flex flex-col justify-center items-start space-y-0">
 												<span>
 													{value}
 												</span>

@@ -10,6 +10,7 @@ import { db } from "../firebase/FirebaseConfig";
 import { TagContext } from "../context/TagContext";
 import { useGetUserInfo } from "./useGetUserInfo";
 
+
 export const useGetTransactions = () => {
 	const [transactions, setTransactions] = useState([]);
 	const [transactionTotal, setTransactionTotal] = useState({
@@ -21,7 +22,6 @@ export const useGetTransactions = () => {
 	const today=new Date();
 	today.setHours(0,0,0,0);
 
-	// const [chartData, setChartData]= useState({})
 
 	const [isTransactionAvailable, setIsTransactionAvailable] = useState(false);
 	const { setIsLoading } = useContext(TagContext);
@@ -68,14 +68,12 @@ export const useGetTransactions = () => {
 		return () => unsubscribe();
 	};
 
-	// const chartData={
-	// 	labels: transactions.map(transaction=>)
-	// }
+	
 	useEffect(() => {
 		setTimeout(() => {
 			getTransactions();
-		}, 3000);
+		}, 2000);
 	}, []);
 
-	return { transactions, transactionTotal, isTransactionAvailable, dayTotal };
+	return { transactions, transactionTotal, isTransactionAvailable, dayTotal,  };
 };

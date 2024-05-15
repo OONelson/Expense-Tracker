@@ -24,7 +24,6 @@ const TagProvider = ({ children }) => {
 			}}
 		>
 			{children}
-			{/* {isTagOpen && <TagList />} */}
 		</TagContext.Provider>
 	);
 };

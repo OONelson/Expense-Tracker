@@ -6,13 +6,6 @@ const ConfirmProvider = ({ children }) => {
 	const [confirmation, setConfirmation] = useState(false);
 	const [selected, setSelected] = useState(null);
 
-	const handleOpenConfirmation = () => {
-		if (!selected) {
-			alert("please select a tag");
-		} else {
-			setConfirmation(true);
-		}
-	};
 	const handleCloseConfirmation = () => {
 		setConfirmation(false);
 	};
@@ -21,7 +14,7 @@ const ConfirmProvider = ({ children }) => {
 		<ConfirmContext.Provider
 			value={{
 				confirmation,
-				handleOpenConfirmation,
+				setConfirmation,
 				handleCloseConfirmation,
 				setSelected,
 				selected
