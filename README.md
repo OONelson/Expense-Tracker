@@ -1,5 +1,6 @@
 # Expense Tracker
 =================
+
 [offer a way to keep track of your financial expenses in a convenient and organized way. It typically allows you to input information about your expenses and provides tools for analyzing and categorizing this information to help you better understand your spending habits.]
 
 ## Getting started
