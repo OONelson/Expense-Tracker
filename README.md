@@ -21,5 +21,5 @@
 ## Features
 -----------
 
-    * [Sign in with Google]: [Signing in with google is the only way to login into the application]
+    * Sign in with Google: [Signing in with google is the only way to login into the application]
     
