@@ -21,5 +21,7 @@
 ## Features
 -----------
 
-    * Sign in with Google: [Signing in with google is the only way to login into the application]
+    * Sign in with Google: Signing in with google is the only way to login into the application
+    * Dark/Light Mode toggle: User can be able to toggle between light and dark modeby clicking on the moon or sun icon
+    
     
