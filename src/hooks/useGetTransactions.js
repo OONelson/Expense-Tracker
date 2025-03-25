@@ -1,79 +1,74 @@
 import { useContext, useEffect, useState } from "react";
 import {
-	query,
-	collection,
-	where,
-	orderBy,
-	onSnapshot,
+  query,
+  collection,
+  where,
+  orderBy,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../firebase/FirebaseConfig";
 import { TagContext } from "../context/TagContext";
 import { useGetUserInfo } from "./useGetUserInfo";
 
-
 export const useGetTransactions = () => {
-	const [transactions, setTransactions] = useState([]);
-	const [transactionTotal, setTransactionTotal] = useState({
-		expenses: 0.0
-	});
-	const [dayTotal, setDayTotal]= useState(null)
+  const [transactions, setTransactions] = useState([]);
+  const [transactionTotal, setTransactionTotal] = useState({
+    expenses: 0.0,
+  });
+  const [dayTotal, setDayTotal] = useState(null);
 
-	// FUNCTIONALITY FOR A DAY SPENDING
-	const today=new Date();
-	today.setHours(0,0,0,0);
+  // FUNCTIONALITY FOR A DAY SPENDING
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
+  const [isTransactionAvailable, setIsTransactionAvailable] = useState(false);
+  const { setIsLoading } = useContext(TagContext);
 
-	const [isTransactionAvailable, setIsTransactionAvailable] = useState(false);
-	const { setIsLoading } = useContext(TagContext);
+  const transColRef = collection(db, "transactions");
+  const { userID } = useGetUserInfo();
 
-	const transColRef = collection(db, "transactions");
-	const { userID } = useGetUserInfo();
-	
-	const getTransactions = async () => {
-		let unsubscribe;
-		try {
-			const queryTransactions = query(
-				transColRef, 
-				where("userID", "==", userID, "createdAt", ">=", today),
-				orderBy("createdAt", "desc")
-			);
-			
-			unsubscribe = onSnapshot(queryTransactions, (snapshot) => {
-				let docs = [];
-				let totalExpenses = 0;
-				
-				snapshot.forEach((doc) => {
-					
-					const data = doc.data()
-					const id = doc.id;
-					
-					docs.push({ ...data, id });
+  const getTransactions = async () => {
+    let unsubscribe;
+    try {
+      const queryTransactions = query(
+        transColRef,
+        where("userID", "==", userID, "createdAt", ">=", today),
+        orderBy("createdAt", "desc")
+      );
 
-					
-						totalExpenses += Number(data.transactionAmount);
-				
-					console.log(totalExpenses);
-				});
-				setDayTotal(totalExpenses)
-				setTransactions(docs);
-				setIsTransactionAvailable(transactions);
-				setTransactionTotal({
-					expenses: totalExpenses
-				});
-				setIsLoading(false);
-			});
-		} catch (err) {
-			console.log(err);
-		}
-		return () => unsubscribe();
-	};
+      unsubscribe = onSnapshot(queryTransactions, (snapshot) => {
+        let docs = [];
+        let totalExpenses = 0;
 
-	
-	useEffect(() => {
-		setTimeout(() => {
-			getTransactions();
-		}, 2000);
-	}, []);
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          const id = doc.id;
 
-	return { transactions, transactionTotal, isTransactionAvailable, dayTotal,  };
+          docs.push({ ...data, id });
+
+          totalExpenses += Number(data.transactionAmount);
+
+          console.log(totalExpenses);
+        });
+        setDayTotal(totalExpenses);
+        setTransactions(docs);
+        setIsTransactionAvailable(transactions);
+        setTransactionTotal({
+          expenses: totalExpenses,
+        });
+        setIsLoading(false);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    return () => unsubscribe();
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      getTransactions();
+    }, 2000);
+  }, []);
+
+  return { transactions, transactionTotal, isTransactionAvailable, dayTotal };
 };
